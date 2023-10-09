@@ -1,0 +1,17 @@
+{
+  "name": "MusicHub",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "terraconnect-state": "link:D:/Git/Terraconnect/Terraconnect-State",
+    "terraconnect-state-sync": "link:D:/Git/Terraconnect/Terraconnect-State-Sync",
+    "terraconnect-ui": "link:D:/Git/Terraconnect/Terraconnect-UI"
+  }
+}
