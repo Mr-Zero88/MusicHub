@@ -16,9 +16,18 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
+        use: 'babel-loader',
+      },
+      {
+        test: /\.css$/,
         use: [
-          'babel-loader'
-        ],
+          'style-loader',
+          'css-loader'
+        ]
+      },
+      {
+        test: /\.svg$/,
+        use: "file-loader",
       },
     ],
   },
