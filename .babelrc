@@ -1,0 +1,17 @@
+{
+  "presets": [
+    "@babel/preset-typescript",
+    "@babel/env"
+  ],
+  "plugins": [
+    "@babel/plugin-syntax-jsx",
+    [
+      "@babel/plugin-transform-react-jsx",
+      {
+        "throwIfNamespace": false,
+        "runtime": "automatic",
+        "importSource": "Terraconnect-UI"
+      }
+    ]
+  ]
+}
