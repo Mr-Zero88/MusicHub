@@ -12,7 +12,7 @@ const PanelGrid: TerraconnectUI.ComponentFN = ({ children }) => {
     )
   })
   return (
-    <div>
+    <div data-grid-columm={"1fr"} data-grid-rows={"1fr"}>
       {mappedChildren}
     </div >
   );
