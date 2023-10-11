@@ -1,0 +1,5 @@
+app-panel-grid > div {
+  display: grid;
+  grid-template-columns: attr(data-grid-columm);
+  grid-template-rows: attr(data-grid-rows);
+}
