@@ -24,6 +24,7 @@
     "style-loader": "^3.3.3",
     "terraconnect-state": "link:D:/Git/Terraconnect/Terraconnect-State",
     "terraconnect-state-sync": "link:D:/Git/Terraconnect/Terraconnect-State-Sync",
+    "terraconnect-throttle": "link:D:/Git/Terraconnect/Terraconnect-Throttle/",
     "terraconnect-ui": "link:D:/Git/Terraconnect/Terraconnect-UI",
     "terser-webpack-plugin": "^5.3.9",
     "ts-loader": "^9.5.0",

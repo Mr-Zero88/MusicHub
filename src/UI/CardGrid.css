@@ -1,0 +1,8 @@
+app-card-grid > div {
+  display: grid;
+  grid-gap: 10px;
+  margin: 10px;
+  width: calc(100% - 20px);
+  grid-template-columns: repeat(attr(data-grid-columm-count number), calc(attr(data-gird-element-size number) * 1px));
+  grid-template-rows: repeat(attr(data-grid-rows-count number), calc(attr(data-gird-element-size number) * 1px));
+}

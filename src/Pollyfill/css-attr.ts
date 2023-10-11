@@ -57,7 +57,16 @@ let rules: Array<{
   property: string,
   format: Function
 }> = [];
-const parseCss = (element: Element) => {
+let cssObservers = new Map<HTMLElement, MutationObserver>();
+const parseCss = (elements: HTMLElement | HTMLElement[]) => {
+  if (!Array.isArray(elements))
+    elements = [elements];
+  elements.forEach(element => {
+    if (cssObservers.has(element)) return;
+    let observer = new MutationObserver((...args) => parseCss(element));
+    observer.observe(element, { characterData: true, attributes: true, childList: true, subtree: true });
+    cssObservers.set(element, observer);
+  });
   rules = [];
   let css = Array.from(document.querySelectorAll('style')).map(_ => _.innerHTML).join('\n');
   const cssRule = /\s*(.*?)\s*{([^}]*)}/g, cssParse = /\s*(.*?)\s*:\s*([^;]*?);/g;
@@ -70,10 +79,13 @@ const parseCss = (element: Element) => {
       if (parsedCssValue !== null) {
         let property = parsedCssValue.cssProp;
         let format = parsedCssValue.func;
+        selector = selector.replaceAll('{', '').replaceAll('}', '');
         rules.push({ selector, property, format })
       }
     }
   }
+  (global as any).rules = rules;
+  applyAttributeStyle(document.body);
 }
 const applyAttributeStyle = (element: HTMLElement) => {
   let matches = rules.map<[Array<HTMLElement>, typeof rules[any]]>(rule => [Array.from(element.querySelectorAll<HTMLElement>(rule.selector)), rule]).filter(([elements]) => elements.length != 0);
@@ -101,9 +113,19 @@ const applyAttributeStyle = (element: HTMLElement) => {
   HTMLElement.prototype.append = function append(...nodes: (string | Node)[]) {
     naiveAppend.bind(this)(...nodes);
     if (nodes.some(_ => !(typeof _ == "string") && _ instanceof HTMLElement && _.localName == "style"))
-      parseCss(this);
+      parseCss(nodes.filter(_ => _ instanceof HTMLElement) as HTMLElement[]);
     applyAttributeStyle(this);
   }
 })(HTMLElement.prototype.append);
+
+((naiveAppendChild) => {
+  HTMLElement.prototype.appendChild = function append<T extends Node>(node: T) {
+    naiveAppendChild.bind(this)(node);
+    if (node instanceof HTMLElement && node.localName == "style")
+      parseCss(node);
+    applyAttributeStyle(this);
+    return node;
+  }
+})(HTMLElement.prototype.appendChild);
 
 export { };
