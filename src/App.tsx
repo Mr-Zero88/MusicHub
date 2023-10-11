@@ -8,12 +8,12 @@ import Panel from './UI/Panels/Panel';
 const App: TerraconnectUI.Component = () => {
   return (
     <>
-      {/* <CardGrid>
-        <Card>Test</Card>
-      </CardGrid> */}
-      <PanelGrid>
+      <CardGrid gap={10} margin={10}>
+        <Card width={3} height={3}>Test</Card>
+      </CardGrid>
+      {/* <PanelGrid>
         <Panel>Test</Panel>
-      </PanelGrid>
+      </PanelGrid> */}
     </>
   );
 }
