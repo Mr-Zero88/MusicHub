@@ -1,8 +1,19 @@
-app-card-grid > div {
-  display: grid;
-  grid-gap: 10px;
-  margin: 10px;
-  width: calc(100% - 20px);
-  grid-template-columns: repeat(attr(data-grid-columm-count number), calc(attr(data-gird-element-size number) * 1px));
-  grid-template-rows: repeat(attr(data-grid-rows-count number), calc(attr(data-gird-element-size number) * 1px));
+app-card-grid {
+  --margin: calc(attr(margin number, 0) * 1px);
+  --gap: calc(attr(gap number, 0) * 1px);
+
+  >div {
+    display: grid;
+    margin: var(--margin);
+    grid-gap: var(--gap);
+    width: calc(100% - var(--margin) * 2);
+    grid-template-columns: repeat(var(--grid-columm-count), calc(var(--grid-element-size) * 1px));
+    grid-template-rows: repeat(var(--grid-rows-count), calc(var(--grid-element-size) * 1px));
+  }
+}
+
+app-card-grid>div {
+  --grid-element-size: attr(data-grid-element-size number, 0);
+  --grid-columm-count: attr(data-grid-columm-count number, 0);
+  --grid-rows-count: attr(data-grid-rows-count number, 0);
 }

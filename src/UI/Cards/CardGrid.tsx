@@ -1,28 +1,37 @@
 import * as TerraconnectUI from 'terraconnect-ui';
-import * as State from 'terraconnect-state';
 import { throttle } from 'terraconnect-throttle';
 import './CardGrid.css';
+import { createState, Value, State, Modified, ChildModified } from 'terraconnect-state';
 
-const CardGrid: TerraconnectUI.ComponentFN = ({ children }) => {
-  let girdSize = State.createState({ width: document.documentElement.clientWidth, height: document.documentElement.clientHeight });
-  window.addEventListener('resize', () => girdSize[State.Value] = { width: document.documentElement.clientWidth, height: document.documentElement.clientHeight });
-  let gridColummCount = State.createState(() => Math.floor((girdSize[State.Value].width - 20) / 110), [girdSize]);
-  let girdElementSize = State.createState(() => (girdSize[State.Value].width - 20 - 10 * (gridColummCount[State.Value] - 1)) / gridColummCount[State.Value], [girdSize, gridColummCount]);
+interface CardGridProps {
+  margin?: number;
+  gap?: number;
+  cardSize?: number;
+}
 
-  let rChildren = (children.reduce[State.Value]((a, b, i) => {
-    if (Array.isArray(b[State.Value]))
-      a.push(...b[State.Value]);
+const CardGrid: TerraconnectUI.ComponentFN<CardGridProps> = ({ children, margin, gap, cardSize }) => {
+  let gridMargin = createState(margin as (State<number> | number | null) ?? 0);
+  let girdGap = createState(gap as (State<number> | number | null) ?? 0);
+  let girdCardSize = createState<number>(cardSize as (State<number> | number | null) ?? 100);
+  let girdSize = createState({ width: document.documentElement.clientWidth - gridMargin[Value] * 2, height: document.documentElement.clientHeight - gridMargin[Value] * 2 });
+  window.addEventListener('resize', () => girdSize[Value] = { width: document.documentElement.clientWidth - gridMargin[Value] * 2, height: document.documentElement.clientHeight - gridMargin[Value] * 2 });
+  let gridColummCount = createState(() => Math.floor(girdSize[Value].width / (girdCardSize[Value] + girdGap[Value])), [girdSize]);
+  let girdElementSize = createState(() => (girdSize[Value].width - 10 * (gridColummCount[Value] - 1)) / gridColummCount[Value], [girdSize, gridColummCount]);
+
+  let rChildren = (children.reduce[Value]((a, b, i) => {
+    if (Array.isArray(b[Value]))
+      a.push(...b[Value]);
     else
-      a.push(b[State.Value]);
+      a.push(b[Value]);
     console.log("rChildren");
     return a;
-  }, []) as State.State<any>).filter[State.Value]((_: any) => _ != null) as typeof children;
+  }, []) as State<any>).filter[Value]((_: any) => _ != null) as typeof children;
 
   let positions: Array<Array<number>> = [];
   let calc = () => {
     let offset = 0;
     positions = [];
-    return rChildren[State.Value].map((child, i) => {
+    return rChildren[Value].map((child, i) => {
       let card: Element = (child as Element);
       if (card.localName != "app-card")
         card = Array.from(card.children).find(_ => _.localName == "app-card") ?? card;
@@ -33,10 +42,10 @@ const CardGrid: TerraconnectUI.ComponentFN = ({ children }) => {
         typeof height == "number" ? height : [height.min, height.max]
       ];
       if (Array.isArray(size[0]))
-        size[0] = Math.max(size[0][0], Math.min(size[0][1], gridColummCount[State.Value]));
+        size[0] = Math.max(size[0][0], Math.min(size[0][1], gridColummCount[Value]));
       if (Array.isArray(size[1]))
         size[1] = size[1][1]
-      if (positions.length == 0 || positions[positions.length - 1].length + size[0] - 1 >= gridColummCount[State.Value])
+      if (positions.length == 0 || positions[positions.length - 1].length + size[0] - 1 >= gridColummCount[Value])
         positions.push([]);
       let x = positions[positions.length - 1].length;
       let y = positions.length - 1;
@@ -55,31 +64,31 @@ const CardGrid: TerraconnectUI.ComponentFN = ({ children }) => {
       );
     });
   }
-  let callCalc = throttle(() => mappedChildren[State.Value] = calc(), 1);
+  let callCalc = throttle(() => mappedChildren[Value] = calc(), 1);
   const applyListeners = (child: Element) => {
     let card = child;
     if (card.localName != "app-card")
       card = Array.from(card.children).find(_ => _.localName == "app-card") ?? card;
-    (card as unknown as { props: any }).props.width?.[State.Modified].on(callCalc);
-    (card as unknown as { props: any }).props.height?.[State.Modified].on(callCalc);
+    (card as unknown as { props: any }).props.width?.[Modified].on(callCalc);
+    (card as unknown as { props: any }).props.height?.[Modified].on(callCalc);
   }
-  rChildren[State.Value].forEach(applyListeners);
-  rChildren[State.ChildModified].on((child, key) => {
+  rChildren[Value].forEach(applyListeners);
+  rChildren[ChildModified].on((child, key) => {
     if (typeof key == "string" && !key.includes('.'))
       applyListeners(child);
   });
 
-  let mappedChildren = State.createState(calc,
+  let mappedChildren = createState(calc,
     [rChildren, gridColummCount]
   );
 
-  let gridRowsCount = State.createState(() => positions.length, [mappedChildren]);
+  let gridRowsCount = createState(() => positions.length, [mappedChildren]);
 
   return (
-    <div data-grid-columm-count={gridColummCount} data-grid-rows-count={gridRowsCount} data-gird-element-size={girdElementSize}>
+    <div data-grid-columm-count={gridColummCount} data-grid-rows-count={gridRowsCount} data-grid-element-size={girdElementSize}>
       {mappedChildren}
     </div >
   );
 }
 
-export default CardGrid as TerraconnectUI.Component;
+export default CardGrid as TerraconnectUI.Component<CardGridProps>;
