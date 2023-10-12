@@ -3,8 +3,7 @@ app-card-grid {
   --gap: calc(attr(gap number, 0) * 1px);
   display: block;
 
-  > div {
-    display: grid;
+  > app-grid {
     margin: var(--margin);
     grid-gap: var(--gap);
     width: calc(100% - var(--margin) * 2);
@@ -13,7 +12,7 @@ app-card-grid {
   }
 }
 
-app-card-grid > div {
+app-card-grid > app-grid {
   --grid-element-size: attr(data-grid-element-size number, 0);
   --grid-columm-count: attr(data-grid-columm-count number, 0);
   --grid-rows-count: attr(data-grid-rows-count number, 0);

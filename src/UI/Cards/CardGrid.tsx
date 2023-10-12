@@ -2,6 +2,8 @@ import * as TerraconnectUI from 'terraconnect-ui';
 import { throttle } from 'terraconnect-throttle';
 import './CardGrid.css';
 import { createState, Value, State, Modified, ChildModified } from 'terraconnect-state';
+import Grid from '../Grid/Grid';
+import GridItem from '../Grid/GridItem';
 
 interface CardGridProps {
   margin?: number;
@@ -61,8 +63,9 @@ const CardGrid: TerraconnectUI.ComponentFN<CardGridProps> = function ({ children
 
       console.log("mappedChildren");
       return (
-        <div style={{ gridArea: `${y + 1}/${x + 1}/${y + size[1] + 1}/${x + size[0] + 1}` }
-        }> {child} </div>
+        <GridItem area={`${y + 1}/${x + 1}/${y + size[1] + 1}/${x + size[0] + 1}`}>
+          {child}
+        </GridItem>
       );
     });
   }
@@ -87,9 +90,9 @@ const CardGrid: TerraconnectUI.ComponentFN<CardGridProps> = function ({ children
   let gridRowsCount = createState(() => positions.length, [mappedChildren]);
 
   return (
-    <div data-grid-columm-count={gridColummCount} data-grid-rows-count={gridRowsCount} data-grid-element-size={girdElementSize}>
+    <Grid data-grid-columm-count={gridColummCount} data-grid-rows-count={gridRowsCount} data-grid-element-size={girdElementSize}>
       {mappedChildren}
-    </div >
+    </Grid >
   );
 }
 

@@ -1,5 +1,6 @@
 import * as TerraconnectUI from 'Terraconnect-UI';
 import './Card.css';
+import { Value, isState } from 'terraconnect-state';
 
 interface CardProps {
   background?: string;
@@ -8,14 +9,30 @@ interface CardProps {
   onClick?: TerraconnectUI.MouseEventHandler;
 }
 
-const Card: TerraconnectUI.Component<CardProps> = ({ onClick, children }) => {
+const Card: TerraconnectUI.ComponentFN<CardProps> = ({ onClick, children }) => {
   return (
-    <div onClick={onClick}>
-      <div>
+    <>
+      <CardContent onClick={onClick}>
         {children}
-      </div>
-    </div>
+      </CardContent>
+    </>
   );
 }
 
-export default Card;
+interface CardContentProps {
+  onClick?: TerraconnectUI.MouseEventHandler;
+}
+
+const CardContent: TerraconnectUI.Component<CardContentProps> = function ({ onClick, children }) {
+  if (isState(onClick) && onClick[Value] != null)
+    this.addEventListener("click", onClick[Value] as unknown as (event: Event) => void);
+  else if (!isState(onClick) && onClick != null)
+    this.addEventListener("click", onClick as unknown as (event: Event) => void);
+  return (
+    <>
+      {children}
+    </>
+  );
+} as TerraconnectUI.ComponentFN<CardContentProps> as TerraconnectUI.Component<CardContentProps>;
+
+export default Card as TerraconnectUI.Component<CardProps>;
