@@ -9,12 +9,14 @@ interface CardGridProps {
   cardSize?: number;
 }
 
-const CardGrid: TerraconnectUI.ComponentFN<CardGridProps> = ({ children, margin, gap, cardSize }) => {
+const CardGrid: TerraconnectUI.ComponentFN<CardGridProps> = function ({ children, margin, gap, cardSize }) {
   let gridMargin = createState(margin as (State<number> | number | null) ?? 0);
   let girdGap = createState(gap as (State<number> | number | null) ?? 0);
   let girdCardSize = createState<number>(cardSize as (State<number> | number | null) ?? 100);
-  let girdSize = createState({ width: document.documentElement.clientWidth - gridMargin[Value] * 2, height: document.documentElement.clientHeight - gridMargin[Value] * 2 });
-  window.addEventListener('resize', () => girdSize[Value] = { width: document.documentElement.clientWidth - gridMargin[Value] * 2, height: document.documentElement.clientHeight - gridMargin[Value] * 2 });
+
+  let girdSize = createState({ width: 0, height: 0 });
+  new ResizeObserver(() => girdSize[Value] = { width: this.clientWidth - gridMargin[Value] * 2, height: this.clientHeight - gridMargin[Value] * 2 }).observe(this);
+
   let gridColummCount = createState(() => Math.floor(girdSize[Value].width / (girdCardSize[Value] + girdGap[Value])), [girdSize]);
   let girdElementSize = createState(() => (girdSize[Value].width - 10 * (gridColummCount[Value] - 1)) / gridColummCount[Value], [girdSize, gridColummCount]);
 
