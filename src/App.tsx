@@ -1,19 +1,28 @@
+import Route from 'Components/Router/Route';
+import RouteNotFound from 'Components/Router/RouteNotFound';
+import Router from 'Components/Router/Router';
 import * as TerraconnectUI from 'terraconnect-ui';
-import { Value, createState } from 'terraconnect-state';
-import Card from './UI/Cards/Card';
-import CardGrid from './UI/Cards/CardGrid';
-import PanelGrid from './UI/Panels/PanelGrid';
-import Panel from './UI/Panels/Panel';
+
+import NodesTestApp from 'Tests/Nodes';
+import CardsTestApp from 'Tests/Cards';
 
 const App: TerraconnectUI.Component = () => {
+  let path = window.location.pathname;
+  if (!path.endsWith("/")) path += "/";
+
   return (
     <>
-      <CardGrid gap={10} margin={10}>
-        <Card width={3} height={3}>Test</Card>
-      </CardGrid>
-      {/* <PanelGrid>
-        <Panel>Test</Panel>
-      </PanelGrid> */}
+      <Router>
+        <Route path="/">
+          {CardsTestApp}
+        </Route>
+        <Route path="/nodes/">
+          {NodesTestApp}
+        </Route>
+        <RouteNotFound>
+          <h1>"{path.slice(1, -1)}" 404 Not Found</h1>
+        </RouteNotFound>
+      </Router>
     </>
   );
 }

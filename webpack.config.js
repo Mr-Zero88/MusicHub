@@ -5,9 +5,14 @@ module.exports = {
   mode: 'development',
   entry: './src/index.tsx',
   resolve: {
-    extensions: ['.tsx', '.ts', ".js"]
+    extensions: ['.tsx', '.ts', ".js"],
+    modules: [path.resolve(__dirname, "src"), "node_modules"]
   },
   devtool: 'source-map',
+  devServer: {
+    port: 3000,
+    historyApiFallback: true
+  },
   output: {
     path: path.join(__dirname, "dist"),
     filename: 'bundle.js',
@@ -43,6 +48,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({ template: './src/index.html', filename: path.join(__dirname, "dist", "index.html") })
+    new HtmlWebpackPlugin({ template: './src/index.html', filename: path.join(__dirname, "dist", "index.html"), publicPath: "/" })
   ],
 };
