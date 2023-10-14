@@ -16,6 +16,13 @@ module.exports = {
   output: {
     path: path.join(__dirname, "dist"),
     filename: 'bundle.js',
+    devtoolModuleFilenameTemplate(info) {
+      const rel = path.relative(__dirname, info.absoluteResourcePath).replaceAll("\\", "/").replaceAll("C:/Users/Admin/AppData/Roaming/npm/pnpm-global/5/node_modules/.pnpm", "node_modules/.pnpm-global").replaceAll("../", "");
+      if (rel.endsWith(".css")) return `webpack://MusicHub/${info.resourcePath}`;
+      if (rel.startsWith("src"))
+        return `webpack://MusicHUB${rel.replaceAll("src", "")}`;
+      return `webpack://${rel}`;
+    },
   },
   module: {
     rules: [

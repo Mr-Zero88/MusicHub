@@ -1,0 +1,75 @@
+diff --git a/dist/utils.js b/dist/utils.js
+index bc4ddf88fd9b847140dfcce888da52eb5eb58239..c5318c43755a6f5cd630f56ee1d63eef45d197c7 100644
+--- a/dist/utils.js
++++ b/dist/utils.js
+@@ -275,8 +275,8 @@ const reControlChars = /[\u0000-\u001f\u0080-\u009f]/g;
+ function escapeLocalIdent(localident) {
+   // TODO simplify in the next major release
+   return escape(localident
+-  // For `[hash]` placeholder
+-  .replace(/^((-?[0-9])|--)/, "_$1").replace(filenameReservedRegex, "-").replace(reControlChars, "-").replace(/\./g, "-"));
++    // For `[hash]` placeholder
++    .replace(/^((-?[0-9])|--)/, "_$1").replace(filenameReservedRegex, "-").replace(reControlChars, "-").replace(/\./g, "-"));
+ }
+ function defaultGetLocalIdent(loaderContext, localIdentName, localName, options) {
+   const {
+@@ -292,8 +292,8 @@ function defaultGetLocalIdent(loaderContext, localIdentName, localName, options)
+   // eslint-disable-next-line no-underscore-dangle
+   if (loaderContext._module && loaderContext._module.matchResource) {
+     relativeResourcePath = `${normalizePath(
+-    // eslint-disable-next-line no-underscore-dangle
+-    _path.default.relative(context, loaderContext._module.matchResource))}`;
++      // eslint-disable-next-line no-underscore-dangle
++      _path.default.relative(context, loaderContext._module.matchResource))}`;
+   }
+ 
+   // eslint-disable-next-line no-param-reassign
+@@ -320,8 +320,8 @@ function defaultGetLocalIdent(loaderContext, localIdentName, localName, options)
+   for (let tier = 0; localIdentHash.length < hashDigestLength; tier++) {
+     // TODO remove this in the next major release
+     const hash = loaderContext.utils && typeof loaderContext.utils.createHash === "function" ? loaderContext.utils.createHash(hashFunction) :
+-    // eslint-disable-next-line no-underscore-dangle
+-    loaderContext._compiler.webpack.util.createHash(hashFunction);
++      // eslint-disable-next-line no-underscore-dangle
++      loaderContext._compiler.webpack.util.createHash(hashFunction);
+     if (hashSalt) {
+       hash.update(hashSalt);
+     }
+@@ -331,12 +331,12 @@ function defaultGetLocalIdent(loaderContext, localIdentName, localName, options)
+     // TODO: bug in webpack with unicode characters with strings
+     hash.update(Buffer.from(options.content, "utf8"));
+     localIdentHash = (localIdentHash + hash.digest(hashDigest)
+-    // Remove all leading digits
++      // Remove all leading digits
+     ).replace(/^\d+/, "")
+-    // Replace all slashes with underscores (same as in base64url)
+-    .replace(/\//g, "_")
+-    // Remove everything that is not an alphanumeric or underscore
+-    .replace(/[^A-Za-z0-9_]+/g, "").slice(0, hashDigestLength);
++      // Replace all slashes with underscores (same as in base64url)
++      .replace(/\//g, "_")
++      // Remove everything that is not an alphanumeric or underscore
++      .replace(/[^A-Za-z0-9_]+/g, "").slice(0, hashDigestLength);
+   }
+ 
+   // TODO need improve on webpack side, we should allow to pass hash/contentHash without chunk property, also `data` for `getPath` should be looks good without chunk property
+@@ -446,8 +446,8 @@ function getModulesOptions(rawOptions, exportType, loaderContext) {
+     return false;
+   }
+   const resourcePath =
+-  // eslint-disable-next-line no-underscore-dangle
+-  loaderContext._module && loaderContext._module.matchResource || loaderContext.resourcePath;
++    // eslint-disable-next-line no-underscore-dangle
++    loaderContext._module && loaderContext._module.matchResource || loaderContext.resourcePath;
+   let auto;
+   let rawModulesOptions;
+   if (typeof rawOptions.modules === "undefined") {
+@@ -765,7 +765,7 @@ function normalizeSourceMapForRuntime(map, loaderContext) {
+       const resourceDirname = _path.default.dirname(loaderContext.resourcePath);
+       const absoluteSource = _path.default.resolve(resourceDirname, source);
+       const contextifyPath = normalizePath(_path.default.relative(loaderContext.rootContext, absoluteSource));
+-      return `webpack://./${contextifyPath}`;
++      return `webpack://MusicHUB/${contextifyPath.replace("src/", "")}`;
+     });
+   }
+   return JSON.stringify(resultMap);
