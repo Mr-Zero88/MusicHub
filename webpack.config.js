@@ -21,7 +21,7 @@ module.exports = {
       if (rel.endsWith(".css")) return `webpack://MusicHub/${info.resourcePath}`;
       if (rel.startsWith("src"))
         return `webpack://MusicHUB${rel.replaceAll("src", "")}`;
-      return `webpack://${rel}`;
+      return `webpack://${rel.replace('/src', '')}`;
     },
   },
   module: {
