@@ -1,6 +1,5 @@
-import { State, Value, createState } from 'terraconnect-state';
+import { Value } from 'terraconnect-state';
 import * as TerraconnectUI from 'terraconnect-ui';
-import { HTMLComponent } from 'terraconnect-ui/jsx-runtime';
 
 export type RouteProps = {
   path: string;
