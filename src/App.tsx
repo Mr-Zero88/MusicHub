@@ -5,6 +5,7 @@ import * as TerraconnectUI from 'terraconnect-ui';
 
 import NodesTestApp from 'Tests/Nodes';
 import CardsTestApp from 'Tests/Cards';
+import StiftTilbeckApp from 'Tests/Stift-Tilbeck';
 
 const App: TerraconnectUI.Component = () => {
   let path = window.location.pathname;
@@ -12,8 +13,12 @@ const App: TerraconnectUI.Component = () => {
 
   return (
     <>
-      <Router>
+      {StiftTilbeckApp}
+      {/* <Router>
         <Route path="/">
+          {StiftTilbeckApp}
+        </Route>
+        <Route path="/cards/">
           {CardsTestApp}
         </Route>
         <Route path="/nodes/">
@@ -22,7 +27,7 @@ const App: TerraconnectUI.Component = () => {
         <RouteNotFound>
           <h1>"{path.slice(1, -1)}" 404 Not Found</h1>
         </RouteNotFound>
-      </Router>
+      </Router> */}
     </>
   );
 }

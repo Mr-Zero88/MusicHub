@@ -11,7 +11,10 @@ module.exports = {
   devtool: 'source-map',
   devServer: {
     port: 3000,
-    historyApiFallback: true
+    historyApiFallback: true,
+    allowedHosts: [
+      'terminally-polite-ray.ngrok-free.app',
+    ]
   },
   output: {
     path: path.join(__dirname, "dist"),
@@ -44,6 +47,19 @@ module.exports = {
         ]
       },
       {
+        test: /\.scss$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          'sass-loader'
+        ]
+      },
+      {
         test: /\.svg$/,
         use: "file-loader",
       },
@@ -51,6 +67,19 @@ module.exports = {
         test: /\.js$/,
         loader: 'source-map-loader',
         enforce: 'pre'
+      },
+      {
+        test: /\.mdx?$/,
+        use: [
+          {
+            loader: 'babel-loader', options: {}
+          },
+          {
+            loader: '@mdx-js/loader',
+            /** @type {import('@mdx-js/loader').Options} */
+            options: { jsx: true /* jsxImportSource: "terraconnect-ui", otherOptions… */ }
+          }
+        ]
       }
     ],
   },
