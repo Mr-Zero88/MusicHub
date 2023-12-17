@@ -3,6 +3,7 @@ import './GridItem.css';
 
 interface GridItemProps {
   area: string;
+  class: string;
 }
 
 const GridItem: TerraconnectUI.ComponentFN<GridItemProps> = ({ children }) => {

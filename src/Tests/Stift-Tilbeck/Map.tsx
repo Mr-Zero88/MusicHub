@@ -3,12 +3,12 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as TerraconnectUI from 'Terraconnect-UI';
 
-const Map: TerraconnectUI.ComponentFN = () => {
+const Map: TerraconnectUI.ComponentFN = function () {
   const scene = new Scene();
   const camera = new PerspectiveCamera(75, window.innerWidth / 400, 0.1, 1000);
 
   const renderer = new WebGLRenderer({ alpha: true });
-  renderer.setSize(window.innerWidth, 400);
+  renderer.setSize(window.innerWidth, 400, false);
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
@@ -61,7 +61,7 @@ const Map: TerraconnectUI.ComponentFN = () => {
       scene.add(object)
     },
     (xhr) => {
-      console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+      // console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
     },
     (error) => {
       console.log(error)
@@ -83,20 +83,15 @@ const Map: TerraconnectUI.ComponentFN = () => {
 
   function resizeCanvasToDisplaySize() {
     const canvas = renderer.domElement;
-    // look up the size the canvas is being displayed
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
-
-    // you must pass false here or three.js sadly fights the browser
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
-
-    // update any render target sizes here
   }
 
   const resizeObserver = new ResizeObserver(resizeCanvasToDisplaySize);
-  resizeObserver.observe(renderer.domElement, { box: 'content-box' });
+  resizeObserver.observe(this);
 
   return (
     <>

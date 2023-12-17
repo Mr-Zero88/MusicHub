@@ -1,16 +1,17 @@
+import { assign } from 'Components/Router/Router';
 import * as TerraconnectUI from 'Terraconnect-UI';
 import { Value } from 'terraconnect-state';
 
 interface ButtonsProps {
-  next: string;
-  previous: string;
+  next?: string;
+  previous?: string;
 }
 
 const Buttons: TerraconnectUI.ComponentFN<ButtonsProps> = ({ next, previous }) => {
   return (
     <>
-      <button className="previous" data-previous={previous != null ? true : null} onClick={() => window.location.assign(`${window.location.origin}/${previous}`)}>Zurück</button>
-      <button className="next" data-next={next != null ? true : null} onClick={() => window.location.assign(`${window.location.origin}/${next}`)}>Weiter</button>
+      <button className="previous" data-previous={previous != null ? true : null} onClick={() => assign(`${window.location.origin}/${previous}`)}>Zurück</button>
+      <button className="next" data-next={next != null ? true : null} onClick={() => assign(`${window.location.origin}/${next}`)}>Weiter</button>
     </>
   );
 }

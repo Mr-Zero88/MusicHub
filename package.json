@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack serve",
-    "build": "webpack"
+    "build": "webpack",
+    "serve": "serve -S ./dist/"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,7 @@
     "@types/three": "^0.158.0",
     "@types/webpack": "^5.28.3",
     "babel-loader": "^9.1.3",
+    "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.3",

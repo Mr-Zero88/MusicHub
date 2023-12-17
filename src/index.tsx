@@ -7,8 +7,9 @@ window.appRoot?.remove();
 let root = <App></App>;
 document.body.append(root);
 window.appRoot = root;
-// @ts-ignore
-module.hot.accept();
+if ("hot" in module)
+  // @ts-ignore
+  module.hot.accept();
 declare global {
   var appRoot: Element | null;
 }

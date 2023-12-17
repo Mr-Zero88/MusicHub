@@ -3,7 +3,6 @@ import { Value } from 'terraconnect-state';
 
 const date: TerraconnectUI.ComponentFN = ({ children }) => {
   let date = (children[Value][0] as Node as Text).data;
-  console.log(date);
   return (
     <>
       {timeDifference(Date.now(), new Date(date).getTime())}
@@ -14,8 +13,6 @@ const date: TerraconnectUI.ComponentFN = ({ children }) => {
 export default date as TerraconnectUI.Component;
 
 function timeDifference(current: number, previous: number) {
-
-  console.log(current, previous)
 
   var msPerMinute = 60 * 1000;
   var msPerHour = msPerMinute * 60;

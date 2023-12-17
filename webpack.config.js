@@ -1,4 +1,5 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 const path = require('path');
 
 module.exports = {
@@ -12,9 +13,7 @@ module.exports = {
   devServer: {
     port: 3000,
     historyApiFallback: true,
-    allowedHosts: [
-      'terminally-polite-ray.ngrok-free.app',
-    ]
+    allowedHosts: "all"
   },
   output: {
     path: path.join(__dirname, "dist"),
@@ -84,6 +83,11 @@ module.exports = {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({ template: './src/index.html', filename: path.join(__dirname, "dist", "index.html"), publicPath: "/" })
+    new HtmlWebpackPlugin({ template: './src/index.html', filename: path.join(__dirname, "dist", "index.html"), publicPath: "/" }),
+    new CopyPlugin({
+      patterns: [
+        { from: "public", to: "." },
+      ],
+    })
   ],
 };

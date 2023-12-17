@@ -14,6 +14,7 @@ import Wasserturm from './Content/Wasserturm.mdx';
 import Friedhof from './Content/Friedhof.mdx';
 
 import Map from './Map';
+import Buttons from './Buttons';
 
 export default (
   <>
@@ -37,6 +38,10 @@ export default (
       <Route path="/Friedhof">
         <Friedhof></Friedhof>
       </Route>
+      <RouteNotFound>
+        Hier bist du falsch!
+        <Buttons previous=''></Buttons>
+      </RouteNotFound>
     </Router>
   </>
 );
