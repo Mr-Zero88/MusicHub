@@ -1,6 +1,6 @@
 import * as TerraconnectUI from 'terraconnect-ui';
 import Route, { RouteProps } from './Route';
-import { State, Value, createState } from 'terraconnect-state';
+import { ChildModified, Modified, State, Value, createState } from 'terraconnect-state';
 import { HTMLComponent } from 'terraconnect-ui';
 import RouteNotFound from './RouteNotFound';
 
@@ -10,17 +10,7 @@ type RouterProps = {
 
 type filter<T> = (predicate: (value: T, index: number, array: T[]) => boolean) => State<T[]>;
 
-export let path = createState(window.location.pathname + (window.location.pathname.endsWith("/") ? "" : "/"));
-
-// ((nativeAssing) => {
-//   window.Location.prototype.assign = (url: string | URL) => {
-//     if (url instanceof URL)
-//       url = url.pathname;
-//     window.location.pathname = url;
-//     path[Value] = window.location.pathname + (window.location.pathname.endsWith("/") ? "" : "/");
-//   };
-// })(window.Location.prototype.assign);
-// window.location = new window.Location();
+export let path = createState((window.location.pathname + (window.location.pathname.endsWith("/") ? "" : "/")).replace("/index.html/", "/"));
 
 export function assign(url: string) {
   url = url.replace(window.location.origin, "");
@@ -29,7 +19,10 @@ export function assign(url: string) {
 }
 
 window.addEventListener('popstate', (event) => {
-  path[Value] = event.state + (event.state.endsWith("/") ? "" : "/");
+  let state: string = event.state ?? "/";
+  state += (state.endsWith("/") ? "" : "/");
+  state = state.replace("/index.html/", "/");
+  path[Value] = state;
 });
 
 const Router: TerraconnectUI.ComponentFN<RouterProps> = ({ children }) => {
@@ -38,9 +31,17 @@ const Router: TerraconnectUI.ComponentFN<RouterProps> = ({ children }) => {
   // let routes = filter((route) => route.component[Value] == Route && route.props.path[Value] == path[Value]) as State<Array<unknown>> as State<Array<HTMLComponent<RouteProps>>>;
   let notFound = filter((route) => route.component[Value] == RouteNotFound) as State<Array<unknown>> as State<Array<HTMLComponent<RouteProps>>>;
   let routes = createState((children: Array<HTMLComponent<RouteProps>>, path) => children.filter((route) => route.component == Route && route.props.path[Value] == path), [children as any, path])
+  let route = createState((routes, notFound) => routes.length != 0 ? routes : notFound, [routes, notFound]);
+  let assignRoute = (route: TerraconnectUI.HTMLComponent<RouteProps>) => route.querySelectorAll('a').forEach((element) => element.addEventListener('click', (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    assign(element.href);
+  }));
+  route[Modified].on((routes) => routes.forEach(assignRoute));
+  route[Value].forEach(assignRoute);
   return (
     <>
-      {createState((routes, notFound) => routes.length != 0 ? routes : notFound, [routes, notFound])}
+      {route}
     </>
   );
 }

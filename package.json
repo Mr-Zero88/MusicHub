@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack serve",
     "build": "webpack",
-    "serve": "serve -S ./dist/"
+    "serve": "serve -s -S ./dist/"
   },
   "keywords": [],
   "author": "",

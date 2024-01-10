@@ -40,14 +40,12 @@
 
 import Route from 'Components/Router/Route';
 import RouteNotFound from 'Components/Router/RouteNotFound';
-import Router from 'Components/Router/Router';
+import Router, { path } from 'Components/Router/Router';
+import { createState } from 'terraconnect-state';
 import * as TerraconnectUI from 'terraconnect-ui';
 import KlinikenTestApp from 'Tests/Kliniken';
 
 const App: TerraconnectUI.Component = () => {
-  let path = window.location.pathname;
-  if (!path.endsWith("/")) path += "/";
-
   return (
     <>
       <Router>
@@ -55,7 +53,7 @@ const App: TerraconnectUI.Component = () => {
           <KlinikenTestApp></KlinikenTestApp>
         </Route>
         <RouteNotFound>
-          <h1>"{path.slice(1, -1)}" 404 Not Found</h1>
+          <h1>"{createState((path: string) => path.slice(1, -1), [path])}" 404 Not Found</h1>
         </RouteNotFound>
       </Router>
     </>
