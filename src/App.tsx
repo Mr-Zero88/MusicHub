@@ -49,9 +49,7 @@ const App: TerraconnectUI.Component = () => {
   return (
     <>
       <Router>
-        <Route path="/">
-          <KlinikenTestApp></KlinikenTestApp>
-        </Route>
+        {KlinikenTestApp()}
         <RouteNotFound>
           <h1>"{createState((path: string) => path.slice(1, -1), [path])}" 404 Not Found</h1>
         </RouteNotFound>
