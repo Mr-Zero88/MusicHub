@@ -6,7 +6,6 @@ import Route from 'Components/Router/Route';
 import { State } from 'terraconnect-state';
 import ChevronLeft from 'Icons/chevron-left';
 import { back } from 'Components/Router/Router';
-// const ChevronLeft = require(require("../../Icons/chevron-left.svg").default);
 
 const Kliniken = () => {
   let list = [
@@ -30,7 +29,6 @@ const Kliniken = () => {
     "Klinik für Kardiologie und Angiologie (Balg)",
     "Klinik für Kinder- und Jugendmedizin",
     "Klinik für Neurologie",
-    "Klinik für Orthopädie und Unfallchirurgie",
     "Klinik für Orthopädie und Unfallchirurgie",
     "Klinik für Palliativmedizin",
     "Klinik für Schmerzmedizin",

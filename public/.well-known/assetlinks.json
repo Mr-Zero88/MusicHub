@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.ngrok_free.terminally_polite_ray.twa",
+      "sha256_cert_fingerprints": [
+        "E8:D2:A9:38:52:B6:53:8C:FA:5B:A4:8A:F8:8B:7D:CB:27:4E:78:1F:C3:B5:F9:21:2C:99:E4:F0:5F:AB:D9:92"
+      ]
+    }
+  }
+]
