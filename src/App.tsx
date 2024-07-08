@@ -46,16 +46,18 @@ import * as TerraconnectUI from 'terraconnect-ui';
 import KlinikenTestApp from 'Tests/Kliniken';
 
 const App: TerraconnectUI.Component = () => {
-  return (
-    <>
-      <Router>
-        {KlinikenTestApp()}
-        <RouteNotFound>
-          <h1>"{createState((path: string) => path.slice(1, -1), [path])}" 404 Not Found</h1>
-        </RouteNotFound>
-      </Router>
-    </>
-  );
+  // return (
+  //   <div>
+  //     {/* <Router>
+  //       {KlinikenTestApp()}
+  //       <RouteNotFound>
+  //         <h1>"{createState((path: string) => path.slice(1, -1), [path])}" 404 Not Found</h1>
+  //       </RouteNotFound>
+  //     </Router> */}
+  //     {KlinikenTestApp()}
+  //   </ div>
+  // );
+  return KlinikenTestApp();
 }
 
 export default App;

@@ -30,6 +30,7 @@
     margin: 10px;
     margin-top: 0;
     border-radius: 10px;
+    overflow: hidden;
 
     > a {
       display: block;
@@ -55,4 +56,74 @@
     justify-content: center;
     background-color: #eeefef;
   }
+}
+
+app-klinik {
+  app-markdown {
+    h1 {
+      font-size: 20px;
+    }
+  }
+}
+
+.clinic-head {
+  margin: -10px;
+  padding: 10px;
+}
+
+.clinic-head-leader {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.clinic-head-leader-picture {
+  padding: 10px;
+  img {
+    width: 100%;
+    border-radius: 50%;
+  }
+  .no-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+}
+
+.clinic-head-leader-info {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  span {
+    height: fit-content;
+  }
+}
+
+.clinic-info {
+  margin: -10px;
+  padding: 10px;
+}
+
+.clinic-points {
+  margin: -10px;
+  padding: 10px;
+}
+
+.clinic-contact {
+  margin: -10px;
+  padding: 10px;
+}
+
+.clinic-head,
+.clinic-info,
+.clinic-points,
+.clinic-contact {
+  &:nth-child(even) {
+    background-color: lightgray;
+  }
+}
+
+.link-noline {
+  text-decoration: dashed;
+  color: black;
 }

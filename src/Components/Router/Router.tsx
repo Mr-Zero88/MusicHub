@@ -32,23 +32,17 @@ window.addEventListener('popstate', (event) => {
 const Router: TerraconnectUI.ComponentFN<RouterProps> = ({ children }) => {
   children = flattenChildren(children as unknown as State<Array<TerraconnectUI.HTMLComponent<any>>>) as unknown as typeof children;
   // let filter = children.filter[Value] as unknown as filter<State<HTMLComponent<RouteProps>>>; WTF WHY
-  let filter = children.filter[Value] as unknown as filter<State<{ component: string | TerraconnectUI.Component, props: State<RouteProps> }>>;
+  let filter = children.filter[Value] as unknown as filter<State<{ component: string | TerraconnectUI.Component, props: State<RouteProps<any, any>> }>>;
   // let routes = filter((route) => route.component[Value] == Route && route.props.path[Value] == path[Value]) as State<Array<unknown>> as State<Array<HTMLComponent<RouteProps>>>;
-  let notFound = filter((route) => route.component[Value] == RouteNotFound) as State<Array<unknown>> as State<Array<HTMLComponent<RouteProps>>>;
-  let routes = createState((children: Array<HTMLComponent<RouteProps>>, path) => children.filter((route) => route.component == Route && route.props.path[Value] == path), [children as any, path]);
-  console.log(children, path);
+  let notFound = filter((route) => route.component[Value] == RouteNotFound) as State<Array<unknown>> as State<Array<HTMLComponent<RouteProps<any, any>>>>;
+  let routes = createState((children: Array<HTMLComponent<RouteProps<any, any>>>, path) => children.filter((route) => route.component == Route && route.props.path[Value] == path), [children as any, path]);
+  // console.log(children, path);
   let route = createState((routes, notFound) => routes.length != 0 ? routes : notFound, [routes, notFound]);
-  let clickRoute = (event: MouseEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
-    assign((event.target as HTMLAnchorElement).href);
-  };
-  let assignRoute = (route: TerraconnectUI.HTMLComponent<RouteProps>) => route.querySelectorAll('a').forEach((element) => {
-    element.removeEventListener('click', clickRoute);
-    element.addEventListener('click', clickRoute);
+  route[Modified].on((newRoute, oldRoute) => {
+    (oldRoute[0] as any).visible[Value] = false;
+    (newRoute[0] as any).visible[Value] = true;
   });
-  route[Modified].on((routes) => routes.forEach(assignRoute));
-  route[Value].forEach(assignRoute);
+  route[Value].forEach((route) => (route as any).visible[Value] = true);
   return (
     <>
       {route}
