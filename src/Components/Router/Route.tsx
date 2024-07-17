@@ -1,38 +1,22 @@
 import { createState, PreserveState, Value } from 'terraconnect-state';
-import * as TerraconnectUI from 'terraconnect-ui';
 import { jsx } from 'terraconnect-ui/jsx-runtime';
-import { HTMLComponent } from 'terraconnect-ui';
 import { assign } from './Router';
+import { children, Component, ComponentFN, HTMLComponent } from 'terraconnect-ui/*';
 
-
-// export type RouteProps = {
-//   path: string;
-// }
-
-// const Route: TerraconnectUI.ComponentFN<RouteProps> = function ({ children }) {
-//   if (typeof this.props.path[Value] == "string" && !this.props.path[Value].endsWith("/"))
-//     this.props.path[Value] += "/";
-//   return (
-//     <>
-//       {children}
-//     </>
-//   );
-// }
-
-export type RouteProps<T extends TerraconnectUI.Component<K>, K> = {
+export type RouteProps<T extends Component<K>, K> = {
   path: string;
   component: T;
 } & K;
 
-const Route: TerraconnectUI.ComponentFN<RouteProps<any, any>> = function (props) {
+const Route: ComponentFN<RouteProps<any, any>> = function (props) {
   let { component, path, ...args } = props;
   if (typeof this.props.path[Value] == "string" && !this.props.path[Value].endsWith("/"))
     this.props.path[Value] += "/";
   (this as any).visible = createState(false);
   (this as any).visible[PreserveState] = true;
 
-  let cache: null | TerraconnectUI.children = null;
-  let content = createState((visible: boolean) => {
+  let cache: null | children = null;
+  let content = createState((visible: boolean, component: Component) => {
     if (visible) {
       if (cache != null)
         return [cache];
@@ -42,7 +26,7 @@ const Route: TerraconnectUI.ComponentFN<RouteProps<any, any>> = function (props)
         event.preventDefault();
         assign((event.target as HTMLAnchorElement).href);
       };
-      let assignRoute = (route: TerraconnectUI.HTMLComponent<RouteProps<any, any>>) => route.querySelectorAll('a').forEach((element) => {
+      let assignRoute = (route: HTMLComponent<RouteProps<any, any>>) => route.querySelectorAll('a').forEach((element) => {
         element.removeEventListener('click', clickRoute);
         element.addEventListener('click', clickRoute);
       });
@@ -50,8 +34,8 @@ const Route: TerraconnectUI.ComponentFN<RouteProps<any, any>> = function (props)
       return [cache];
     }
     return <></>
-  }, [(this as any).visible]);
+  }, [(this as any).visible, component]);
   return content;
 }
 
-export default Route as unknown as TerraconnectUI.Component<RouteProps<any, any>>;
+export default Route as unknown as Component<RouteProps<any, any>>;
