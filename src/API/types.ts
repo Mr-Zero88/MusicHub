@@ -14,7 +14,7 @@ export interface Hospital {
   url: string;
 };
 
-export interface Contact {
+export type Contact = {
   description: string;
   street: string;
   housenumber: string;
@@ -50,10 +50,10 @@ export interface Service {
   text: string;
 }
 
-export interface Clinic {
+export type Clinic = {
   id: number;
   isCenter?: boolean;
-  name?: string;
+  name: string;
   text?: string;
   title?: string;
   url?: string;

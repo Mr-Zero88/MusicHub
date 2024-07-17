@@ -1,6 +1,6 @@
 import * as TerraconnectUI from 'terraconnect-ui';
 import Route, { RouteProps } from './Route';
-import { ChildModified, Modified, State, Value, createState } from 'terraconnect-state';
+import { Modified, State, Value, createState } from 'terraconnect-state';
 import { HTMLComponent } from 'terraconnect-ui';
 import RouteNotFound from './RouteNotFound';
 
@@ -30,11 +30,9 @@ window.addEventListener('popstate', (event) => {
 });
 
 const Router: TerraconnectUI.ComponentFN<RouterProps> = ({ children }) => {
-  let flattenedChildren = flattenChildren(children as unknown as State<Array<TerraconnectUI.HTMLComponent<any>>>);
-  // let filter = flattenedChildren.filter[Value] as unknown as filter<State<{ component: string | TerraconnectUI.Component, props: State<RouteProps<any, any>> }>>;
-  // let notFound = filter((route) => route.component[Value] == RouteNotFound) as State<Array<unknown>> as State<Array<HTMLComponent<RouteProps<any, any>>>>;
-  let notFound = createState((children: Array<HTMLComponent<RouteProps<any, any>>>, path) => children.filter((route) => route.component == RouteNotFound), [flattenedChildren as any, path]);
-  let routes = createState((children: Array<HTMLComponent<RouteProps<any, any>>>, path) => children.filter((route) => route.component == Route && route.props.path[Value] == path), [flattenedChildren as any, path]);
+  let flattenedChildren = flattenChildren(children as unknown as State<Array<TerraconnectUI.HTMLComponent<RouteProps<any, any>>>>);
+  let notFound = createState((children) => children.filter((route) => route.component == RouteNotFound), [flattenedChildren]);
+  let routes = createState((children, path) => children.filter((route) => route.component == Route && route.props.path[Value] == path), [flattenedChildren, path]);
   let route = createState((routes, notFound) => routes.length != 0 ? routes : notFound, [routes, notFound]);
   route[Modified].on((newRoute, oldRoute) => {
     (oldRoute[0] as any).visible[Value] = false;
@@ -54,7 +52,9 @@ function isHTMLComponent<T>(value: any): value is State<HTMLComponent<T>> {
 
 function flattenChildren(children: State<Array<TerraconnectUI.HTMLComponent<any>>>) {
   return (children.reduce[Value]((a, b, i) => {
-    if (Array.isArray(b[Value]))
+    if (b == null)
+      console.log("b")
+    else if (Array.isArray(b[Value]))
       a.push(...flattenChildren(b)[Value]);
     else
       a.push(b[Value]);
