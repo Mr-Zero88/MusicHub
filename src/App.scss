@@ -69,6 +69,8 @@ app-klinik {
 .clinic-head {
   margin: -10px;
   padding: 10px;
+  display: flex;
+  flex-flow: wrap;
 }
 
 .clinic-head-leader {
@@ -76,10 +78,19 @@ app-klinik {
   grid-template-columns: 50% 50%;
 }
 
+app-is-mobile:not(.mobile) {
+  .clinic-head {
+    container-type: inline-size;
+    .clinic-head-leader {
+      max-width: 25cqw;
+    }
+  }
+}
+
 .clinic-head-leader-picture {
   padding: 10px;
   img {
-    width: 100%;
+    max-width: 100%;
     border-radius: 50%;
   }
   .no-image {
