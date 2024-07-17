@@ -10,7 +10,7 @@ import 'App.scss';
 
 const App: TerraconnectUI.Component = () => {
   let cache: Map<string, TerraconnectUI.children> = new Map;
-  let content = createState((clinics) => (
+  return createState((clinics) => (
     <Router>
       <Route path="/" component={ClinicList} list={{ clinics }} />
       {clinics.map((clinic) => {
@@ -23,16 +23,7 @@ const App: TerraconnectUI.Component = () => {
         <h1>"{createState((path: string) => path.slice(1, -1), [path])}" 404 Not Found</h1>
       </RouteNotFound>
     </Router>
-  ) as TerraconnectUI.HTMLComponent<any>, [clinics]);
-
-  // ToDo: Fix the ui change
-  content[Modified].on((a, b) => {
-    let parent = b.parentNode;
-    b.remove();
-    parent?.append(a);
-  });
-
-  return content;
+  ), [clinics]);
 }
 
 export default App;
